@@ -14,10 +14,13 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name="products")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def getMainImage(self):
+        return self.images.get(is_main=True)
 
 class ProductImage(models.Model):
     url = models.URLField()
     product = models.ForeignKey(Product, related_name="images")
+    is_main = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -6,10 +6,9 @@
     <br>
     <h6>Categories</h6>
     <ul>
-      <li>cat1</li>
-      <li>cat2</li>
-      <li>cat3</li>
-      <li>cat4</li>
+      {% for category in categories %}
+      <li>{{category.name}}</li>
+      {% endfor %}
       <li>show all</li>
     </ul>
   </div>
@@ -17,7 +16,10 @@
 {% block main2 %}
   <h2>Category (Page #)  page navigation</h2>
   <p>sort dropdown</p>
-  <a href="{% url 'shopping:show' id=1 %}"><img src="" alt="" class="img-med"></a>
+  {% for product in products %}
+    <a href="{% url 'shopping:show' id=product.id %}"><img src="{{product.getMainImage.url}}" alt="" class="img-med"></a>{{}}</p>
+  {% endfor %}
+
   <a href="{% url 'shopping:show' id=1 %}"><img src="" alt="" class="img-med"></a>
   <a href="{% url 'shopping:show' id=1 %}"><img src="" alt="" class="img-med"></a>
   <p>page numbers</p>
