@@ -3,15 +3,15 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     category = models.ForeignKey(Category, related_name="products")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-class Category(models.Model):
-    name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -24,8 +24,8 @@ class ProductImage(models.Model):
 class InventoryItem(models.Model):
     num_avail = models.IntegerField()
     num_sold = models.PositiveIntegerField()
-    cost = models.DecimalField(decimal_places=2)
-    price = models.DecimalField(decimal_places=2)
+    cost = models.DecimalField( max_digits = 10, decimal_places=2)
+    price = models.DecimalField( max_digits = 10, decimal_places=2)
     is_active = models.BooleanField()
     product = models.ForeignKey(Product, related_name="items")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -50,7 +50,7 @@ class Billing(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Order(models.Model):
-    shipping_cost = models.DecimalField( decimal_places = 2 )
+    shipping_cost = models.DecimalField(  max_digits = 10, decimal_places = 2 )
     STATUS_CHOICES = (
         ('c', 'cart'),
         ('i', 'in_process'),
