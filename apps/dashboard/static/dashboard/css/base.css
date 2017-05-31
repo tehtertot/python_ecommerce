@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+}
+.navbar {
+  background: darkred;
+}
+
+/* div sections per page */
+.left, .right {
+  text-align: left;
+  display: inline-block;
+  vertical-align: top;
+  padding: 2%;
+  }
+.left {
+  width: 30%;
+}
+.right {
+  width: 70%;
+}
+.main_content {
+  width: 100%;
+  padding: 2%;
+  margin: 0;
+  text-align: center;
+}
+
+.sidebar {
+  border: 1px solid black;
+  padding: 2%;
+}

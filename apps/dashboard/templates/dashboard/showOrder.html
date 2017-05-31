@@ -1,0 +1,31 @@
+{% extends 'dashboard/base.html' %}
+{% block pagetitle %}Dashboard - Order #{% endblock %}
+{% block main1 %}
+  <div class="orderDetails">
+    <p>Order ID #</p>
+    <br>
+    <p>Customer Shipping Info:</p>
+    <p>Name: </p>
+    <p>Address:</p>
+    <p>address</p>
+    <p>city, state zip</p>
+    <br>
+    <p>Customer Billing Info:</p>
+    <p>Name: </p>
+    <p>Address:</p>
+    <p>address</p>
+    <p>city, state zip</p>
+  </div>
+{% endblock %}
+{% block main2 %}
+  <table class="table table-striped">
+    <tr>
+      <th>ID</th>
+      <th>Item</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Total</th>
+    </tr>
+  </table>
+  <p>status and price breakdown</p>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends 'shopping/base.html' %}
+{% block pagetitle %}Dojo eCommerce{% endblock %}
+{% block main %}
+  <table class="table table-striped">
+    <tr>
+      <th>Item</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Total</th>
+    </tr>
+  </table>
+  <p>Total</p>
+  <p>Keep Shopping</p>
+  <br>
+  <br>
+  {% endblock %}
+  {% block main1 %}
+  <h3>Shipping Information</h3>
+  <form class="" action="" method="post">
+    {% csrf_token %}
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">First Name</label>
+      <div class="col-sm-8">
+        <input type="text" name="first_name" class="form-control" placeholder="last name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Last Name</label>
+      <div class="col-sm-8">
+        <input type="text" name="last_name" class="form-control" placeholder="first name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Address</label>
+      <div class="col-sm-8">
+        <input type="text" name="address" class="form-control" placeholder="address">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Address 2</label>
+      <div class="col-sm-8">
+        <input type="text" name="address2" class="form-control" placeholder="address 2 (optional)">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">City</label>
+      <div class="col-sm-8">
+        <input type="text" name="city" class="form-control" placeholder="city">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">State</label>
+      <div class="col-sm-8">
+        <input type="text" name="state" class="form-control" placeholder="state">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Zip</label>
+      <div class="col-sm-8">
+        <input type="text" name="zip" class="form-control" placeholder="zip">
+      </div>
+    </div>
+    <h3>Billing Information</h3>
+    <p>checkbox same as shipping</p>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">First Name</label>
+      <div class="col-sm-8">
+        <input type="text" name="bfirst_name" class="form-control" placeholder="last name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Last Name</label>
+      <div class="col-sm-8">
+        <input type="text" name="blast_name" class="form-control" placeholder="first name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Address</label>
+      <div class="col-sm-8">
+        <input type="text" name="baddress" class="form-control" placeholder="address">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Address 2</label>
+      <div class="col-sm-8">
+        <input type="text" name="baddress2" class="form-control" placeholder="address 2 (optional)">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">City</label>
+      <div class="col-sm-8">
+        <input type="text" name="bcity" class="form-control" placeholder="city">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">State</label>
+      <div class="col-sm-8">
+        <input type="text" name="bstate" class="form-control" placeholder="state">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Zip</label>
+      <div class="col-sm-8">
+        <input type="text" name="bzip" class="form-control" placeholder="zip">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Card Number</label>
+      <div class="col-sm-8">
+        <input type="text" name="cc" class="form-control" placeholder="cc#">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Security Code</label>
+      <div class="col-sm-8">
+        <input type="text" name="code" class="form-control" placeholder="xxx">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Expiration</label>
+      <div class="col-sm-2">
+        <input type="text" name="expmonth" class="form-control" placeholder="mm">
+      </div>
+      <div class="col-sm-2">
+        <input type="text" name="expyear" class="form-control" placeholder="yyyy">
+      </div>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Pay">
+  </form>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'shopping/base.html' %}
+{% block pagetitle %}Dojo eCommerce{% endblock %}
+{% block main1 %}
+  <p><a href="{% url 'shopping:index' %}">Go Back</a></p>
+  <h3>Product Name</h3>
+  <p><img src="" alt="product img" class="img-lg"></p>
+  <p><img src="" alt="alt images" class="img-sm">
+  <img src="" alt="alt images" class="img-sm"></p>
+{% endblock %}
+{% block main2 %}
+  <p>Description</p>
+  <p>dropdown quantity</p>
+{% endblock %}
+{% block mainbottom %}
+  <h4>Similar Items</h4>
+  <a href="{% url 'shopping:show' id=2 %}"><img src="" alt="other items" class="img-med"></a>
+  <a href="{% url 'shopping:show' id=3 %}"><img src="" alt="other items" class="img-med"></a>
+  <a href="{% url 'shopping:show' id=4 %}"><img src="" alt="other items" class="img-med"></a>
+{% endblock %}
