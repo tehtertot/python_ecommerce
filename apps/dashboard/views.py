@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from .models import Category, Product, ProductImage, InventoryItem
 
 def index(request):
     # User.objects.create(username='admin', password='Password1')
@@ -12,7 +13,10 @@ def showOrders(request):
     return render(request, 'dashboard/orders.html')
 
 def showProducts(request):
-    return render(request, 'dashboard/products.html')
+    context = {
+        "products": Product.objects.all(),
+    }
+    return render(request, 'dashboard/products.html', context )
 
 def showOrder(request, id):
     return render(request, 'dashboard/showOrder.html')

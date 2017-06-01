@@ -33,6 +33,8 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def getMainImage(self):
         return self.images.get(is_main=True)
+    def getActiveInventory(self):
+        return self.items.get(is_active=True)
 
 class ProductImage(models.Model):
     url = models.URLField()
