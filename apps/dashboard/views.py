@@ -18,12 +18,23 @@ def showProducts(request):
     }
     return render(request, 'dashboard/products.html', context )
 
+def editProduct(request, id):
+    context = {
+        "product": Product.objects.get( id = id ),
+        "categories": Category.objects.all(),
+    }
+    return render(request, 'dashboard/editProduct.html', context )
+
+def updateProduct(request):
+    if request.method == "POST":
+        Product.objects.updateProduct( request.POST )
+
+    return redirect( reverse( "db:showProducts" ) )
+
 def destroyProduct(request, id):
     Product.objects.destroyProduct( id = id )
-    if 'HTTP_REFERER' in request.META:
-        return redirect( request.META['HTTP_REFERER'] )
-    else:
-        return redirect( reverse( "db:showProducts" ) )
+
+    return redirect( reverse( "db:showProducts" ) )
 
 def showOrder(request, id):
     return render(request, 'dashboard/showOrder.html')

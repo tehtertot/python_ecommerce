@@ -32,6 +32,11 @@ class ProductManager(models.Manager):
         print "*** Not allowed: Product.objects.destroyProduct(...) (TODO)"
         print "*"*100
 
+    def updateProduct(self, postData):
+        print "*"*100
+        print "*** Not allowed: Product.objects.updateProduct(...) (TODO)"
+        print "*"*100
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
