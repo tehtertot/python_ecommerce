@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from ..dashboard.models import Product, Category, Order
 
 def index(request):
@@ -21,7 +21,7 @@ def addToCart(request, id):
                     'cart_id': request.session['cart_id']}
         item = Order.objects.addToCart(postData)
         if not item['status']:
-            return redirect('shopping:show', id=id)
+            return redirect('shopping:showCart')
     else:
         return redirect('shopping:index')
 

@@ -10,15 +10,15 @@ class OrderManager(models.Manager):
         product = Product.objects.get(id=postData['product_id'])
         item = InventoryItem.objects.filter(product=product, is_active=True)
         message_to_views = {}
-        if item.num_avail < postData['quantity']:
+        if item[0].num_avail < postData['quantity']:
             message_to_views['status'] = False
-            message_to_views['info'] = "Only {} items left in stock.".format(item.num_avail)
+            message_to_views['info'] = "Only {} items left in stock.".format(item[0].num_avail)
         else:
             message_to_views['status'] = True
             cart = Order.objects.get(id=postData['cart_id'])
             for q in range(postData['quantity']):
                 cart.items.add(item)
-
+        return message_to_views
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
