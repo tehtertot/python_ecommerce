@@ -18,7 +18,10 @@
         <td>{{ product.name }}</td>
         <td>{{ product.getActiveInventory.num_avail }}</td>
         <td>{{ product.getActiveInventory.num_sold }}</td>
-        <td><a href="#">edit</a> <a href="#">delete</a></td>
+        <td>
+          <a href="#">edit</a>
+          <a href="{% url 'db:destroyProduct' id=product.id %}">delete</a>
+        </td>
       </tr>
     {% endfor %}
   </table>

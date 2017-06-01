@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from .models import Category, Product, ProductImage, InventoryItem
@@ -17,6 +17,13 @@ def showProducts(request):
         "products": Product.objects.all(),
     }
     return render(request, 'dashboard/products.html', context )
+
+def destroyProduct(request, id):
+    Product.objects.destroyProduct( id = id )
+    if 'HTTP_REFERER' in request.META:
+        return redirect( request.META['HTTP_REFERER'] )
+    else:
+        return redirect( reverse( "db:showProducts" ) )
 
 def showOrder(request, id):
     return render(request, 'dashboard/showOrder.html')

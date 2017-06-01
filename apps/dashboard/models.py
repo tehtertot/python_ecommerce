@@ -25,6 +25,13 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class ProductManager(models.Manager):
+    def destroyProduct(self, id):
+        # return self.get(id=id).delete()
+        print "*"*100
+        print "*** Not allowed: Product.objects.destroyProduct(...) (TODO)"
+        print "*"*100
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -35,6 +42,7 @@ class Product(models.Model):
         return self.images.get(is_main=True)
     def getActiveInventory(self):
         return self.items.get(is_active=True)
+    objects = ProductManager()
 
 class ProductImage(models.Model):
     url = models.URLField()
