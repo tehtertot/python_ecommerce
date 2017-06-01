@@ -3,12 +3,18 @@
 {% block main1 %}
   <p><a href="{% url 'shopping:index' %}">Go Back</a></p>
   <h3>Product Name</h3>
-  <p><img src="" alt="product img" class="img-lg"></p>
-  <p><img src="" alt="alt images" class="img-sm">
-  <img src="" alt="alt images" class="img-sm"></p>
+  <p><img src="{% comment %}{{product.getMainImage.url}}{% endcomment %}" alt="{{product.name}}" class="img-lg"></p>
+  {% for image in product.images.all %}
+    <img src="{% comment %}{{image.url}}{% endcomment %}" alt="alt images" class="img-sm">
+  {% endfor %}
 {% endblock %}
 {% block main2 %}
-  <p>Description</p>
+  <p>{{product.description}}</p>
+  <form class="" action="{% url 'shopping:addToCart' id=product.id %}" method="post">
+    {% csrf_token %}
+    <label>Quantity: <input type="text" name="quantity" class="form-control"></label>
+    <input type="submit" name="" value="Add To Cart">
+  </form>
   <p>dropdown quantity</p>
 {% endblock %}
 {% block mainbottom %}

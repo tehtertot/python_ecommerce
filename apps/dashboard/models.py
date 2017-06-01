@@ -1,7 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import models
+
+class OrderManager(models.Manager):
+    def createCart(self):
+        cart = Order.objects.create(status='c')
+        return cart.id
+    def addToCart(self, postData):
+        product = Product.objects.get(id=postData['product_id'])
+        item = InventoryItem.objects.filter(product=product, is_active=True)
+        message_to_views = {}
+        if item.num_avail < postData['quantity']:
+            message_to_views['status'] = False
+            message_to_views['info'] = "Only {} items left in stock.".format(item.num_avail)
+        else:
+            message_to_views['status'] = True
+            cart = Order.objects.get(id=postData['cart_id'])
+            for q in range(postData['quantity']):
+                cart.items.add(item)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -53,7 +70,7 @@ class Billing(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Order(models.Model):
-    shipping_cost = models.DecimalField(  max_digits = 10, decimal_places = 2 )
+    shipping_cost = models.DecimalField(  max_digits = 10, decimal_places = 2, null = True )
     STATUS_CHOICES = (
         ('c', 'cart'),
         ('i', 'in_process'),
@@ -64,5 +81,6 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     items = models.ManyToManyField( InventoryItem, related_name = "orders" )
-    address = models.OneToOneField( Address, related_name = "order" )
-    billing = models.OneToOneField( Billing, related_name = "order" )
+    address = models.OneToOneField( Address, related_name = "order", null = True )
+    billing = models.OneToOneField( Billing, related_name = "order", null = True )
+    objects = OrderManager()

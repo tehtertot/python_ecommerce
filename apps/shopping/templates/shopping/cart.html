@@ -8,9 +8,17 @@
       <th>Quantity</th>
       <th>Total</th>
     </tr>
+    {% for item in cart.items.all %}
+      <tr>
+        <td>{{product.name}}</td>
+        <td>${{product.price}}</td>
+        <td>quantity</td>
+        <td>${{product.price}}</td>
+      </tr>
+    {% endfor %}
   </table>
-  <p>Total</p>
-  <p>Keep Shopping</p>
+  <p>Total: </p>
+  <p><a href="{% url 'shopping:index' %}" class="btn btn-primary">Keep Shopping</a></p>
   <br>
   <br>
   {% endblock %}
@@ -61,7 +69,7 @@
       </div>
     </div>
     <h3>Billing Information</h3>
-    <p>checkbox same as shipping</p>
+    <p><input type="checkbox" class="sameAsShipping"> same as shipping</p> 
     <div class="form-group row">
       <label class="col-sm-3 col-form-label">First Name</label>
       <div class="col-sm-8">

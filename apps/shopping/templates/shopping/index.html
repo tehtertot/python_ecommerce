@@ -15,12 +15,12 @@
 {% endblock %}
 {% block main2 %}
   <h2>Category (Page #)  page navigation</h2>
-  <p>sort dropdown</p>
+  <p><select class="form-control" name="sort_by">
+    <option value="price">Price</option>
+    <option value="popularity">Most Popular</option>
+  </select>
   {% for product in products %}
-    <a href="{% url 'shopping:show' id=product.id %}"><img src="{{product.getMainImage.url}}" alt="" class="img-med"></a>{{}}</p>
+    <a href="{% url 'shopping:show' id=product.id %}"><img src="{% comment %}{{product.getMainImage.url}}{% endcomment %}" alt="{{product.name}}" class="img-med"></a>
   {% endfor %}
-
-  <a href="{% url 'shopping:show' id=1 %}"><img src="" alt="" class="img-med"></a>
-  <a href="{% url 'shopping:show' id=1 %}"><img src="" alt="" class="img-med"></a>
   <p>page numbers</p>
 {% endblock %}
