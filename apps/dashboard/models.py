@@ -26,16 +26,31 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class ProductManager(models.Manager):
+    def destroyProduct(self, id):
+        # return self.get(id=id).delete()
+        print "*"*100
+        print "*** Not allowed: Product.objects.destroyProduct(...) (TODO)"
+        print "*"*100
+
+    def updateProduct(self, postData):
+        print "*"*100
+        print "*** Not allowed: Product.objects.updateProduct(...) (TODO)"
+        print "*"*100
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     category = models.ForeignKey(Category, related_name="products")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = ProductManager()
     def getMainImage(self):
         return self.images.get(is_main=True)
     def getCurrentPrice(self):
         return self.items.get(product=self, is_active=True).price
+    def getActiveInventory(self):
+        return self.items.get(is_active=True)
 
 class ProductImage(models.Model):
     url = models.URLField()

@@ -4,13 +4,26 @@
   <p>Search Bar and add product button</p>
   <table class="table table-striped">
     <tr>
-      <th>Picture</th>
-      <th>ID</th>
-      <th>Name</th>
+      <th style="width: 10%;">Picture</th>
+      <th style="width: 10%;">ID</th>
+      <th style="width: 30%;">Name</th>
       <th>Inventory Count</th>
       <th>Quantity Sold</th>
-      <th>Action</th>
+      <th style="width: 10%;">Action</th>
     </tr>
+    {% for product in products %}
+      <tr>
+        <td><img src="{% comment %}{{ product.getMainImage.url }}{% endcomment %}" alt="{{ product.name }}" class="img-thumb" /></a></td>
+        <td>{{ product.id }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.getActiveInventory.num_avail }}</td>
+        <td>{{ product.getActiveInventory.num_sold }}</td>
+        <td>
+          <a href="{% url 'db:editProduct' id=product.id %}">edit</a>
+          <a href="{% url 'db:destroyProduct' id=product.id %}">delete</a>
+        </td>
+      </tr>
+    {% endfor %}
   </table>
   <p>page numbers</p>
 {% endblock %}

@@ -18,6 +18,6 @@ from django.conf.urls import url, include
 
 urlpatterns = [
     url(r'^', include('apps.shopping.urls', namespace="shopping")),
-    url(r'^admin/', include('apps.dashboard.urls', namespace="db")),
+    url(r'^dashboard/', include('apps.dashboard.urls', namespace="db")),
     # url(r'^admin/', admin.site.urls),
 ]

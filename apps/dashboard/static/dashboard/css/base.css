@@ -29,3 +29,24 @@
   border: 1px solid black;
   padding: 2%;
 }
+
+.img-thumb {
+  width: 50px;
+  height: 50px;
+  border: 1px solid black;
+  }
+.img-sm {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  }
+.img-med {
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+}
+.img-lg {
+  width: 400px;
+  height: 400px;
+  border: 1px solid black;
+}
