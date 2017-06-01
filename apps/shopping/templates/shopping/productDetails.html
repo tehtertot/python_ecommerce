@@ -10,16 +10,23 @@
 {% endblock %}
 {% block main2 %}
   <p>{{product.description}}</p>
+  <p>Price: ${{product.getCurrentPrice}}</p>
   <form class="" action="{% url 'shopping:addToCart' id=product.id %}" method="post">
     {% csrf_token %}
     <label>Quantity: <input type="text" name="quantity" class="form-control"></label>
     <input type="submit" name="" value="Add To Cart">
   </form>
-  <p>dropdown quantity</p>
+  {% if messages %}
+    <div class="errors">
+    {% for message in messages %}
+      <p>{{message}}</p>
+    {% endfor %}
+    </div>
+  {% endif %}
 {% endblock %}
 {% block mainbottom %}
   <h4>Similar Items</h4>
-  <a href="{% url 'shopping:show' id=2 %}"><img src="" alt="other items" class="img-med"></a>
-  <a href="{% url 'shopping:show' id=3 %}"><img src="" alt="other items" class="img-med"></a>
-  <a href="{% url 'shopping:show' id=4 %}"><img src="" alt="other items" class="img-med"></a>
+  <a href=""><img src="" alt="other items" class="img-med"></a>
+  <a href=""><img src="" alt="other items" class="img-med"></a>
+  <a href=""><img src="" alt="other items" class="img-med"></a>
 {% endblock %}

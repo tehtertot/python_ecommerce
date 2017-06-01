@@ -9,15 +9,16 @@ class OrderManager(models.Manager):
     def addToCart(self, postData):
         product = Product.objects.get(id=postData['product_id'])
         item = InventoryItem.objects.filter(product=product, is_active=True)
+        cart = Order.objects.get(id=postData['cart_id'])
         message_to_views = {}
-        if item[0].num_avail < postData['quantity']:
+        #####check if item is already in cart, and if so, add to its quantity#####
+        if item[0].num_avail < int(postData['quantity']):
             message_to_views['status'] = False
             message_to_views['info'] = "Only {} items left in stock.".format(item[0].num_avail)
         else:
             message_to_views['status'] = True
-            cart = Order.objects.get(id=postData['cart_id'])
-            for q in range(postData['quantity']):
-                cart.items.add(item)
+            OrderItem.objects.create(quantity=int(postData['quantity']),order=cart,item=item[0])
+            message_to_views['info'] = "Added {} items to your cart!".format(postData['quantity'])
         return message_to_views
 
 class Category(models.Model):
@@ -33,6 +34,8 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def getMainImage(self):
         return self.images.get(is_main=True)
+    def getCurrentPrice(self):
+        return self.items.get(product=self, is_active=True).price
 
 class ProductImage(models.Model):
     url = models.URLField()
@@ -84,3 +87,12 @@ class Order(models.Model):
     address = models.OneToOneField( Address, related_name = "order", null = True )
     billing = models.OneToOneField( Billing, related_name = "order", null = True )
     objects = OrderManager()
+
+class OrderItem(models.Model):
+    quantity = models.PositiveSmallIntegerField()
+    order = models.ForeignKey(Order, related_name = "order_items" )
+    item = models.OneToOneField(InventoryItem, related_name = "order_item" )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def subtotal(self):
+        return self.quantity*self.item.price

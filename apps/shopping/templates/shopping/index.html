@@ -7,20 +7,53 @@
     <h6>Categories</h6>
     <ul>
       {% for category in categories %}
-      <li>{{category.name}}</li>
+      <li>{{category.name}} ({{category.products.count}})</li>
       {% endfor %}
       <li>show all</li>
     </ul>
   </div>
 {% endblock %}
 {% block main2 %}
-  <h2>Category (Page #)  page navigation</h2>
-  <p><select class="form-control" name="sort_by">
-    <option value="price">Price</option>
-    <option value="popularity">Most Popular</option>
-  </select>
+  <h2>Category</h2>
+  <div class="row">
+    <div class="col-sm-3">
+      Sort by: <select class="form-control" name="sort_by">
+        <option value="price">Price</option>
+        <option value="popularity">Most Popular</option>
+      </select>
+    </div>
+    <div class="col-sm-3 pull-right">
+        <a href="?page=1">first</a> |
+      {% if products.has_previous %}
+        <a href="?page={{products.previous_page_number}}">previous</a> |
+      {% endif %}
+
+      <span class="current">
+        Page {{ products.number }} of {{ products.paginator.num_pages }}
+      </span>
+      {% if products.has_next %}
+        <a href="?page={{ products.next_page_number }}"> | next</a>
+      {% endif %}
+    </div>
+  </div>
+  <br>
   {% for product in products %}
-    <a href="{% url 'shopping:show' id=product.id %}"><img src="{% comment %}{{product.getMainImage.url}}{% endcomment %}" alt="{{product.name}}" class="img-med"></a>
+    <div class="product_display">
+      <a href="{% url 'shopping:show' id=product.id %}"><img src="{% comment %}{{product.getMainImage.url}}{% endcomment %}" alt="{{product.name}}" class="img-med"></a>
+      <p>{{product.name|truncatechars:25}} <span class="pull-right">${{product.getCurrentPrice}}</span></p>
+    </div>
   {% endfor %}
-  <p>page numbers</p>
+  <br>
+  <div class="pagination">
+    <span class="step-links">
+        {% for page in products.paginator.page_range %}
+          {% if forloop.counter != 1 %}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;{% endif %}
+          {% ifequal page products.number %}
+            {{ page }}
+          {% else %}
+            <a href="?page={{page}}">{{ page }}</a>
+          {% endifequal %}
+        {% endfor %}
+    </span>
+  </div>
 {% endblock %}
