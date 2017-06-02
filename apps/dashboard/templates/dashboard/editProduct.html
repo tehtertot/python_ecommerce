@@ -1,25 +1,25 @@
-{% extends 'dashboard/base.html' %}
+{% extends 'dashboard/base_1row_1col.html' %}
 {% block pagetitle %}Dashboard - Edit Product{% endblock %}
-{% block main2 %}
+{% block main %}
 <h3>Edit Product - ID {{ product.id }}</h3>
 <form action="{% url 'db:updateProduct' %}" method="POST">
   {% csrf_token %}
   <div class="form-group row">
-    <label class="col-sm-3 col-form-label">Name</label>
-    <div class="col-sm-8">
+    <label class="col-sm-2 col-form-label">Name</label>
+    <div class="col-sm-4">
       <input type="text" name="name" class="form-control" value="{{ product.name }}" />
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-3 col-form-label">Description</label>
-    <div class="col-sm-8">
+    <label class="col-sm-2 col-form-label">Description</label>
+    <div class="col-sm-4">
       <!-- <input type="text" name="description" class="form-control" value="{{ product.description }}" /> -->
       <textarea name="description" class="form-control" rows="4">{{ product.description }}</textarea>
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-3 col-form-label">Category</label>
-    <div class="col-sm-8">
+    <label class="col-sm-2 col-form-label">Category</label>
+    <div class="col-sm-4">
       <select name="category" class="form-control">
         {% for category in categories %}
           <option {% if product.category.id == category.id %}selected{% endif %} value="{{ category.id }}">
@@ -30,14 +30,14 @@
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-3 col-form-label">or add a new category</label>
-    <div class="col-sm-8">
+    <label class="col-sm-2 col-form-label">or add a new category</label>
+    <div class="col-sm-4">
       <input type="text" name="new_category" class="form-control" placeholder="Enter a new category" />
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-3 col-form-label">Images</label>
-    <div class="col-sm-8">
+    <label class="col-sm-2 col-form-label">Images</label>
+    <div class="col-sm-4">
       <table class="table">
         <tr>
           <td><button>Upload</button></td>
@@ -56,8 +56,8 @@
     </div>
   </div>
   <div class="form-group row">
-    <span class="col-sm-3 col-form-label"></span>
-    <div class="col-sm-8">
+    <span class="col-sm-2 col-form-label"></span>
+    <div class="col-sm-4">
       <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info">Cancel</a>
       <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info">Preview</a>
       <input type="submit" value="Update" class="btn btn-primary" />
