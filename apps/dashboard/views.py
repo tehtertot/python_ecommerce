@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from .models import Category, Product, ProductImage, InventoryItem
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def index(request):
     # User.objects.create(username='admin', password='Password1')
@@ -13,10 +14,30 @@ def showOrders(request):
     return render(request, 'dashboard/orders.html')
 
 def showProducts(request):
+    all_products = Product.objects.all()
+
+    paginator = Paginator( all_products, 5 )
+    page = request.GET.get( 'page' )
+    try:
+        products = paginator.page( page )
+    except PageNotAnInteger:
+        products = paginator.page( 1 )
+    except EmptyPage:
+        products = paginator.page( paginator.num_pages )
+
     context = {
-        "products": Product.objects.all(),
+        "products": products
     }
     return render(request, 'dashboard/products.html', context )
+
+def newProduct( request ):
+    context = {
+        "categories": Category.objects.all(),
+    }
+    return render(request, 'dashboard/newProduct.html', context )
+
+def createProduct( request ):
+    pass
 
 def editProduct(request, id):
     context = {
