@@ -30,6 +30,15 @@ def showProducts(request):
     }
     return render(request, 'dashboard/products.html', context )
 
+def newProduct( request ):
+    context = {
+        "categories": Category.objects.all(),
+    }
+    return render(request, 'dashboard/newProduct.html', context )
+
+def createProduct( request ):
+    pass
+
 def editProduct(request, id):
     context = {
         "product": Product.objects.get( id = id ),
