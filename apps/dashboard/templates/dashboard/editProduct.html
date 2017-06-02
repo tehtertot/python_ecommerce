@@ -1,63 +1,67 @@
 {% extends 'dashboard/base.html' %}
 {% block pagetitle %}Dashboard - Edit Product{% endblock %}
-{% block main %}
+{% block main2 %}
 <h3>Edit Product - ID {{ product.id }}</h3>
-<div>
-  <form action="{% url 'db:updateProduct' %}" method="POST">
-    {% csrf_token %}
-    <table>
-      <tr>
-        <th style="text-align: right;">Name</th>
-        <td style="text-align: left;"><input type="text" name="name" value="{{ product.name }}" /></td>
-      </tr>
-      <tr>
-        <th style="text-align: right;">Description</th>
-        <td style="text-align: left;"><input type="text" name="description" value="{{ product.description }}" /></td>
-      </tr>
-      <tr>
-        <th style="text-align: right;">Category</th>
-        <td style="text-align: left;">
-          <select name="category">
-            {% for category in categories %}
-              <option {% if product.category.id == category.id %}selected{% endif %} value="{{ category.id }}">
-                {{ category.name }}
-              </option>
-            {% endfor %}
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <th style="text-align: right;">or add a new category</th>
-        <td style="text-align: left;">
-          <input type="text" name="new_category" value="" />
-        </td>
-      </tr>
-      <tr>
-        <th style="text-align: right;">Images</th>
-        <td style="text-align: left;">
-          <button>Upload</button>
-        </td>
-      </tr>
-      {% for image in product.images.all %}
+<form action="{% url 'db:updateProduct' %}" method="POST">
+  {% csrf_token %}
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Name</label>
+    <div class="col-sm-8">
+      <input type="text" name="name" class="form-control" value="{{ product.name }}" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Description</label>
+    <div class="col-sm-8">
+      <!-- <input type="text" name="description" class="form-control" value="{{ product.description }}" /> -->
+      <textarea name="description" class="form-control" rows="4">{{ product.description }}</textarea>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Category</label>
+    <div class="col-sm-8">
+      <select name="category" class="form-control">
+        {% for category in categories %}
+          <option {% if product.category.id == category.id %}selected{% endif %} value="{{ category.id }}">
+            {{ category.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">or add a new category</label>
+    <div class="col-sm-8">
+      <input type="text" name="new_category" class="form-control" placeholder="Enter a new category" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Images</label>
+    <div class="col-sm-8">
+      <table class="table">
         <tr>
-          <th></th>
-          <td style="text-align: left;">
-            <img src="{% comment %}{{ image.url }}{% endcomment %}" alt="{{ product.name }}" class="img-thumb" />
-            {{ image.url }}
-            <a href="#">delete</a>
-            <input type="radio" name="image_is_main" value="{{ image.id }}" {% if image.is_main %}checked{% endif %}>main
-          </td>
+          <td><button>Upload</button></td>
         </tr>
-      {% endfor %}
-      <tr>
-        <th></th>
-        <td style="text-align: left;">
-          <a href="{{ request.META.HTTP_REFERER }}"><button>Cancel</button></a>
-          <a href="{{ request.META.HTTP_REFERER }}"><button>Preview</button></a>
-          <input type="submit" value="Update" />
-        </td>
-      </tr>
-    </table>
-  </form>
-</div>
+        {% for image in product.images.all %}
+          <tr>
+            <td><img src="{% comment %}{{ image.url }}{% endcomment %}" alt="{{ product.name }}" class="img-thumb" /></td>
+            <td>{{ image.url }}</td>
+            <td><a href="#">delete</a></td>
+            <td>
+              <input type="radio" name="image_is_main" value="{{ image.id }}" {% if image.is_main %}checked{% endif %}>main
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+  <div class="form-group row">
+    <span class="col-sm-3 col-form-label"></span>
+    <div class="col-sm-8">
+      <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info">Cancel</a>
+      <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info">Preview</a>
+      <input type="submit" value="Update" class="btn btn-primary" />
+    </div>
+  </div>
+</form>
 {% endblock %}
