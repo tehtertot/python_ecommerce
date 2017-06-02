@@ -11,48 +11,32 @@ def index(request):
         request.session['cart_items'] = 0
         request.session['orderBy'] = 'name'
     request.session['category_id'] = 0
-    all_products = Product.objects.all().order_by(request.session['orderBy'])
-    paginator = Paginator(all_products, 15)
-    page = request.GET.get('page')
-    try:
-        products = paginator.page(page)
-    except PageNotAnInteger:
-        products = paginator.page(1)
-    except EmptyPage:
-        products = paginator.page(paginator.num_pages)
     context = {'categories': Category.objects.all(),
-               'products': products }
+               'products': populateProducts(request) }
     return render(request, 'shopping/index.html', context)
 
 def setOrderBy(request):
     if request.method == "POST":
         if request.POST['sort_by'] == 'price':
             request.session['orderBy'] = 'items__price'
-            print request.session['orderBy']
         elif request.POST['sort_by'] == 'popularity':
             request.session['orderBy'] = '-items__num_sold'
         else:
             request.session['orderBy'] = request.POST['sort_by']
-        if request.session['category_id'] == 0:
-            return redirect('shopping:index')
+        if request.session['category_id'] != 0:
+            category = Category.objects.get(id=request.session['category_id'])
         else:
-            return redirect('shopping:showCategory', request.session['category_id'])
+            category = "all"
+        context = {'categories': Category.objects.all(),
+                   'products': populateProducts(request),
+                   'category': category}
+        return render(request, 'shopping/productDisplay.html', context)
 
 def showCategory(request, cat_id):
     request.session['category_id'] = cat_id
-    cat = Category.objects.get(id=cat_id)
-    cat_products = Product.objects.filter(category=cat).order_by(request.session['orderBy'])
-    paginator = Paginator(cat_products, 15)
-    page = request.GET.get('page')
-    try:
-        products = paginator.page(page)
-    except PageNotAnInteger:
-        products = paginator.page(1)
-    except EmptyPage:
-        products = paginator.page(paginator.num_pages)
     context = {'categories': Category.objects.all(),
-               'products': products,
-               'category': cat }
+               'products': populateProducts(request),
+               'category': Category.objects.get(id=request.session['category_id'])}
     return render(request, 'shopping/index.html', context)
 
 def show(request, id):
