@@ -7,53 +7,71 @@
     <h6>Categories</h6>
     <ul>
       {% for category in categories %}
-      <li>{{category.name}} ({{category.products.count}})</li>
+      {% if category.id|stringformat:'s' == request.session.category_id|stringformat:'s' %}
+        <li>{{category.name}} ({{category.products.count}})</li>
+      {% else %}
+        <li><a href="{% url 'shopping:showCategory' category.id %}" class="selectcat">{{category.name}} ({{category.products.count}})</a></li>
+      {% endif %}
       {% endfor %}
-      <li>show all</li>
+      {% if request.session.category_id == 0 %}
+        <li><i>show all</i></li>
+      {% else %}
+        <li><a href="{% url 'shopping:index' %}">show all</a></li>
+      {% endif %}
     </ul>
   </div>
 {% endblock %}
 {% block main2 %}
-  <h2>Category</h2>
+  {% if request.session.category_id == 0 %}
+  <h2 class="categoryname">All Products</h2>
+  {% else %}
+  <h2 class="categoryname">{{ category.name|title }}s</h2>
+  {% endif %}
   <div class="row">
     <div class="col-sm-3">
-      Sort by: <select class="form-control" name="sort_by">
-        <option value="price">Price</option>
-        <option value="popularity">Most Popular</option>
-      </select>
+      <form class="" action="{% url 'shopping:orderBy' %}" method="post" id="sort_form">
+        {% csrf_token %}
+        Sort by: <select class="form-control" name="sort_by" id="sort_by">
+          <option value="name">Name</option>
+          <option value="price">Price</option>
+          <option value="popularity">Most Popular</option>
+        </select>
+      </form>
     </div>
-    <div class="col-sm-3 pull-right">
+    <div id="products_display">
+      <div class="col-sm-3 pull-right">
         <a href="?page=1">first</a> |
-      {% if products.has_previous %}
+        {% if products.has_previous %}
         <a href="?page={{products.previous_page_number}}">previous</a> |
-      {% endif %}
+        {% endif %}
 
-      <span class="current">
-        Page {{ products.number }} of {{ products.paginator.num_pages }}
-      </span>
-      {% if products.has_next %}
+        <span class="current">
+          Page {{ products.number }} of {{ products.paginator.num_pages }}
+        </span>
+        {% if products.has_next %}
         <a href="?page={{ products.next_page_number }}"> | next</a>
-      {% endif %}
+        {% endif %}
+      </div>
     </div>
-  </div>
-  <br>
-  {% for product in products %}
+    <br>
+    {% for product in products %}
     <div class="product_display">
       <a href="{% url 'shopping:show' id=product.id %}"><img src="{% comment %}{{product.getMainImage.url}}{% endcomment %}" alt="{{product.name}}" class="img-med"></a>
       <p>{{product.name|truncatechars:25}} <span class="pull-right">${{product.getCurrentPrice}}</span></p>
     </div>
-  {% endfor %}
-  <br>
-  <div class="pagination">
-    <span class="step-links">
+    {% endfor %}
+    <br>
+    <div class="pagination">
+      <span class="step-links">
         {% for page in products.paginator.page_range %}
-          {% if forloop.counter != 1 %}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;{% endif %}
-          {% ifequal page products.number %}
-            {{ page }}
-          {% else %}
-            <a href="?page={{page}}">{{ page }}</a>
-          {% endifequal %}
+        {% if forloop.counter != 1 %}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;{% endif %}
+        {% ifequal page products.number %}
+        {{ page }}
+        {% else %}
+        <a href="?page={{page}}">{{ page }}</a>
+        {% endifequal %}
         {% endfor %}
-    </span>
+      </span>
+    </div>
   </div>
 {% endblock %}

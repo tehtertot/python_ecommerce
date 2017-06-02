@@ -8,23 +8,46 @@ class OrderManager(models.Manager):
         return cart.id
     def addToCart(self, postData):
         product = Product.objects.get(id=postData['product_id'])
-        item = InventoryItem.objects.filter(product=product, is_active=True)
+        item = InventoryItem.objects.get(product=product, is_active=True)
         cart = Order.objects.get(id=postData['cart_id'])
+        q = int(postData['quantity'])
         message_to_views = {}
-        #####check if item is already in cart, and if so, add to its quantity#####
-        if item[0].num_avail < int(postData['quantity']):
-            message_to_views['status'] = False
-            message_to_views['info'] = "Only {} items left in stock.".format(item[0].num_avail)
-        else:
-            message_to_views['status'] = True
-            OrderItem.objects.create(quantity=int(postData['quantity']),order=cart,item=item[0])
-            message_to_views['info'] = "Added {} items to your cart!".format(postData['quantity'])
+        try:
+            orderItem = cart.order_items.get(item=item)
+            q = q + orderItem.quantity
+            if item.num_avail < q:
+                message_to_views['status'] = False
+                message_to_views['info'] = "Only {} item(s) left in stock.".format(item.num_avail)
+            else:
+                orderItem.quantity = q
+                orderItem.save()
+                message_to_views['status'] = True
+                message_to_views['info'] = "Added an additional {} {}(s) to your cart.".format(postData['quantity'], product.name)
+        except:
+            if item.num_avail < q:
+                message_to_views['status'] = False
+                message_to_views['info'] = "Only {} item(s) left in stock.".format(item.num_avail)
+            else:
+                message_to_views['status'] = True
+                OrderItem.objects.create(quantity=q,order=cart,item=item)
+                message_to_views['info'] = "Added {} item(s) to your cart!".format(q)
         return message_to_views
-
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    def removeOrderItem(self, postData):
+        q = OrderItem.objects.get(id=postData['orderItem']).quantity
+        OrderItem.objects.get(id=postData['orderItem']).delete()
+        return q
+    def updateOrderItem(self, postData):
+        orderitem = OrderItem.objects.get(id=postData['orderItem'])
+        message_to_views = {}
+        if int(postData['quantity']) > orderitem.item.num_avail:
+            message_to_views['status'] = False
+        else:
+            q = int(postData['quantity']) - orderitem.quantity
+            orderitem.quantity = postData['quantity']
+            orderitem.save()
+            message_to_views['status'] = True
+            message_to_views['quantity'] = q
+        return message_to_views
 
 class ProductManager(models.Manager):
     def destroyProduct(self, id):
@@ -38,6 +61,11 @@ class ProductManager(models.Manager):
         print "*** Not allowed: Product.objects.updateProduct(...) (TODO)"
         print "*"*100
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -45,10 +73,10 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = ProductManager()
-    def getMainImage(self):
-        return self.images.get(is_main=True)
     def getCurrentPrice(self):
         return self.items.get(product=self, is_active=True).price
+    def getMainImage(self):
+        return self.images.get(is_main=True)
     def getActiveInventory(self):
         return self.items.get(is_active=True)
 

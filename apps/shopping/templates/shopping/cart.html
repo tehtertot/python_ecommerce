@@ -1,6 +1,13 @@
 {% extends 'shopping/base.html' %}
 {% block pagetitle %}Dojo eCommerce{% endblock %}
 {% block main %}
+{% if messages %}
+  <div class="errors">
+  {% for message in messages %}
+    <p>{{message}}</p>
+  {% endfor %}
+  </div>
+{% endif %}
   <table class="table table-striped">
     <tr>
       <th>Item</th>
@@ -12,7 +19,12 @@
       <tr>
         <td>{{item.item.product.name}}</td>
         <td>${{item.item.price}}</td>
-        <td>{{item.quantity}}</td>
+        <td><form class="" action="{% url 'shopping:updateCart' %}" method="post">
+          {% csrf_token %}
+          <input type="text" name="quantity" value="{{item.quantity}}" size="1" class="input-center">
+          <input type="submit" class="btn btn-link" value="update">
+          <input type="hidden" name="orderItem" value="{{item.id}}">
+        </form></td>
         <td>${{item.subtotal}}</td>
       </tr>
     {% endfor %}
